@@ -1,3 +1,32 @@
+ <?php
+include("dbconnection.php");
+$error = "";
+$show_modal = false;
+
+$modalHeader = "Ordered!";
+$modalBody = " ";
+echo 'test1';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  if (isset($_POST['buy'])) {
+   echo 'test';
+    $name = mysqli_real_escape_string($db, $_POST['name']);
+    $address = mysqli_real_escape_string($db, $_POST['address']);
+    $contact = mysqli_real_escape_string($db, $_POST['contact']);
+    $contact=(int)$contact;
+
+    $query = "INSERT INTO `user` (`sr`, `name`, `address`, `contact`) VALUES (NULL, '$name', '$address', '$contact');";
+
+    if (mysqli_query($db, $query)) {
+      header('location: orders.php');
+    } else {
+      echo mysqli_error($db);
+    }
+  }
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -63,14 +92,14 @@
             <a class="btn" href="#buyform">Buy Now</a>
         </div>
     </div>
-    <form action="orders.php" id="buyform">
+    <form action="index.php" id="buyform" method="POST">
         <label for="name">Enter Name: </label>
         <input type="text" id="name" name="name" /><br>
         <label for="address">Enter Address: </label>
         <input type="text" id="address" name="address" /><br>
         <label for="contact">Enter Contact: </label>
         <input type="number" id="contact" name="contact" /><br>
-        <input type="submit" value="Buy" class="btn" />
+        <input type="submit" value="Buy" class="btn" name="buy"/>
     </form>
 </body>
 
